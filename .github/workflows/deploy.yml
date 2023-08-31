@@ -1,0 +1,26 @@
+on:
+  push:
+    branches:
+      - main  # Cambia esto según la rama que desees monitorear
+
+name: Deploy to Kubernetes v2.1
+
+jobs:
+  deploy:
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        version: latest  # Utiliza la última versión de kubectl
+
+    - name: Deploy to Kubernetes
+      run: kubectl apply -R -f manifests/
+
+    - name: Verify deployment
+      run: kubectl get pods -A
