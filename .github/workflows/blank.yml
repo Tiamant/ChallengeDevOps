@@ -5,16 +5,16 @@ jobs:
     name: deploy to cluster
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: deploy to cluster
-      uses: steebchen/kubectl@v2.0.0
+      uses: steebchen/kubectl@v2.1.0
       with:
         config: ${{ secrets.KUBE_CONFIG_DATA }}
         command: apply -R -f manifests/  # Aplica recursivamente todos los archivos YAML en la carpeta "manifests/"
     - name: verify deployment
-      uses: steebchen/kubectl@v2.0.0
+      uses: steebchen/kubectl@v2.1.0
       with:
         config: ${{ secrets.KUBE_CONFIG_DATA }}
-        version: v1.21.0
-        binaries-url: "https://dl.k8s.io/release/v1.21.0/bin/linux/amd64/kubectl"
+        version: v1.28.1
+        binaries-url: "https://dl.k8s.io/release/v1.28.1/bin/linux/amd64/kubectl"
         command: get pods -A  # Verifica el estado de todos los pods en todos los namespaces
