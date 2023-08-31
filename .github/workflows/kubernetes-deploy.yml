@@ -11,19 +11,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Kubernetes
-        uses: azure/setup-kubectl@v3
+        uses: actions/checkout@v3  # Reemplazar con la versión correcta
+        
+      - name: Set up kubectl
+        uses: azure/k8s-set-context@v3
         with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
+          kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}  # Reemplazar con el nombre del secreto que contiene tu configuración kubeconfig
+          method: kubeconfig
 
-      - name: Build and push Docker image
+      - name: Apply Kubernetes manifests
         run: |
-          docker build -t your-docker-image .
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker tag your-docker-image your-docker-username/your-docker-image
-          docker push your-docker-username/your-docker-image
-
-      - name: Deploy to Kubernetes
-        run: kubectl apply -f deploy.yaml
+          kubectl apply -f ChallengeDevOps/tree/main/manifests
