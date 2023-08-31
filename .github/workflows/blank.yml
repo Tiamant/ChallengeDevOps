@@ -16,5 +16,5 @@ jobs:
       with:
         config: ${{ secrets.KUBE_CONFIG_DATA }}
         version: v1.28.1
-        binaries-url: "dl.k8s.io/v1.28.1/bin/linux/386/kubectl"
+        binaries-url: dl.k8s.io/v1.28.1/bin/linux/386/kubectl
         command: get pods -A  # Verifica el estado de todos los pods en todos los namespaces
