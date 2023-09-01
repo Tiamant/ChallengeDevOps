@@ -27,9 +27,9 @@ jobs:
       - name: Deploy App(Deployment)
         uses: actions-hub/kubectl@master
         with:
-          args: apply -f manifests/deploy.yml
+          args: apply manifests/deploy.yml
           
       - name: Deploy Service
         uses: actions-hub/kubectl@master
         with:
-          args: apply -f manifests/service.yml
+          args: apply manifests/service.yml
