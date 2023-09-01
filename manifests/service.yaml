@@ -8,6 +8,6 @@ spec:
     app: apache
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 80
+      port: 90
+      targetPort: 90
   type: LoadBalancer
