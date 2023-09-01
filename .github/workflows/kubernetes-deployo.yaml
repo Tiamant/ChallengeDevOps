@@ -5,8 +5,8 @@ on:
     branches:
       - main
 
-env:
-  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+#env:
+ # KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
 jobs:
   deploy:
@@ -15,6 +15,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Create kubeconfig
+        run: |
+          mkdir ${HOME}/.kube
+          echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
+          cat ${HOME}/.kube/config
+      - name: Use context
+        run: kubectl config use-context octobay-api  
 
       - name: Deploy App(Deployment)
         uses: actions-hub/kubectl@master
