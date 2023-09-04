@@ -1,0 +1,36 @@
+name: Deploy to Kubernetes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Configurar kubectl para interactuar con tu clúster de Kubernetes
+      - name: Set up kubectl
+        uses: azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+          version: ${{ secrets.KUBE_VERSION }}
+          install_kubectl: true
+
+      # Desplegar la aplicación en el clúster
+      - name: Deploy Application
+        run: |
+          kubectl apply -f kubernetes-manifests/
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+
+      # Verificar el estado del despliegue
+      - name: Check Deployment Status
+        run: |
+          kubectl rollout status deployment/my-app
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
