@@ -24,7 +24,7 @@ jobs:
       # Desplegar la aplicación en el clúster
       - name: Deploy Application
         run: |
-          kubectl apply -f /manifests/ .
+          kubectl apply -f /manifests/
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
