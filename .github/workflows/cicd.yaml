@@ -12,7 +12,7 @@ jobs:
           profile: github
 
       - name: deploy manifests
-        run: kubectl apply -f manifests/
+        run: kubectl apply -f main/manifests
 
       - name: Get Minikube status
         run: minikube status
