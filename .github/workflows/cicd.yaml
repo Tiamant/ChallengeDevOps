@@ -16,7 +16,7 @@ jobs:
 
       - name: Deploy manifests
         run: |
-          for file in $(find /home/runner/work/ChallengeDevOps/ChallengeDevOps/manifests -type f -name "*.yaml"); do
+          for file in $(find /home/runner/work/ChallengeDevOps/ChallengeDevOps/main/manifests/ -type f -name "*.yaml"); do
             kubectl apply -f "$file"
           done
 
