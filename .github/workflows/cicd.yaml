@@ -32,6 +32,9 @@ jobs:
       - name: Get Minikube IP
         run: echo ${{ steps.minikube.outputs.ip }}
 
+      - name: get all info
+        run: kubectl get all
+
       - name: Get Docker containers
         run: docker ps
 
