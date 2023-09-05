@@ -11,6 +11,9 @@ jobs:
         with:
           profile: github
 
+      - name: check directory
+        run: pwd
+
       - name: Deploy manifests
         run: |
           for file in $(find main/manifests -type f -name "*.yaml"); do
