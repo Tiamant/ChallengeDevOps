@@ -1,20 +1,35 @@
+name: Minikube workflow
 on: push
-name: deploy
 jobs:
-  deploy:
-    name: deploy to cluster
-    runs-on: ubuntu-latest
+  minikube:
+    name: Start Kubernetes cluster
+    runs-on: ubuntu-20.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Install kubectl
-        uses: qgxpagamentos/kubectl-set@v1
+      - name: Start Minikube
+        id: minikube
+        uses: hiberbee/github-action-minikube@latest
         with:
-          base64-kube-config: ${{ secrets.KUBE_CONFIG_DATA }}
-          kubectl-version: v1.22.5
+          profile: github
 
-      - name: Deploy Kubernetes cluster Service/Deployment
-        run: |
-          kubectl version
-          kubectl apply -f manifests/
+      - name: deploy manifests
+        run: kubectl apply -f manifests/
+
+      - name: Get Minikube status
+        run: minikube status
+
+      - name: Get cluster info
+        run: kubectl cluster-info
+
+      - name: Get Kubernetes pods
+        run: kubectl get services --all-namespaces
+
+      - name: Get Minikube IP
+        run: echo ${{ steps.minikube.outputs.ip }}
+
+      - name: Get Docker containers
+        run: docker ps
+
+      - name: Get Helm releases
+        uses: hiberbee/github-action-helm@latest
+        with:
+          helm-command: list
