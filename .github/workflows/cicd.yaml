@@ -11,8 +11,11 @@ jobs:
         with:
           profile: github
 
-      - name: deploy manifests
-        run: kubectl apply -f main/manifests
+      - name: Deploy manifests
+        run: |
+          for file in $(find main/manifests -type f -name "*.yaml"); do
+            kubectl apply -f "$file"
+          done
 
       - name: Get Minikube status
         run: minikube status
