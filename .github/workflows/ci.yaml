@@ -1,36 +1,20 @@
-name: Deploy to Kubernetes
-
-on:
-  push:
-    branches:
-      - main
-
+on: push
+name: deploy
 jobs:
   deploy:
+    name: deploy to cluster
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Configurar kubectl para interactuar con tu clúster de Kubernetes
-      - name: Set up kubectl
-        uses: azure/k8s-set-context@v1
-        with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
-          version: ${{ secrets.KUBE_VERSION }}
-          install_kubectl: true
-
-      # Desplegar la aplicación en el clúster
-      - name: Deploy Application
-        run: |
-          kubectl apply -f /manifests/
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-
-      # Verificar el estado del despliegue
-      - name: Check Deployment Status
-        run: |
-          kubectl rollout status deployment/my-app
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+    - uses: actions/checkout@master
+    - name: deploy to cluster
+      uses: steebchen/kubectl@v2.0.0
+      with: # defaults to latest kubectl binary version
+        config: ${{ secrets.KUBE_CONFIG_DATA }}
+        command: set image --record deployment/my-app container=${{ github.repository }}:${{ github.sha }}
+    - name: verify deployment
+      uses: steebchen/kubectl@v2.0.0
+      with:
+        config: ${{ secrets.KUBE_CONFIG_DATA }}
+        version: v1.21.0 # specify kubectl binary version explicitly
+        binaries-url: "https://dl.k8s.io/release/v1.21.0/bin/linux/amd64/kubectl" # specify the download url explicitly
+        command: rollout status deployment/my-app
