@@ -1,29 +1,12 @@
-apiVersion: autoscaling/v2 
+apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: apache-hpa 
+  name: apache-hpa
 spec:
   scaleTargetRef:
-    apiVersion: apps/v1 
-    kind: Deployment 
-    name: apache-deployment 
-  minReplicas: 1 
-  maxReplicas: 10 
-  metrics: 
-  - type: Deployment
-    resource:
-      name: memory 
-      target:
-        type: Utilization 
-        averageUtilization: 20 
-  behavior: 
-    scaleUp:
-      stabilizationWindowSeconds: 180
-      policies:
-      - type: Pods
-        value: 4  #cantidad de escalado segun el numero de pods
-        periodSeconds: 120
-      - type: Percent
-        value: 20
-        periodSeconds: 120
-      selectPolicy: Max
+    apiVersion: apps/v1
+    kind: Deployment
+    name: apache-deployment
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 20
