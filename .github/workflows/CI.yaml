@@ -21,6 +21,11 @@ jobs:
           kubectl apply -f manifests/components.yaml
           kubectl apply -f manifests/hpa.yaml
         working-directory: ${{ github.workspace }}
+
+      - name: Espera 30 segundos
+        run: sleep 30
+
+        #da tiempo a los pods de que corran.
         
       - name: Get All Info
         run: kubectl get all 
