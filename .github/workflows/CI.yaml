@@ -18,16 +18,17 @@ jobs:
         run: |
           kubectl apply -f manifests/deploy.yaml
           kubectl apply -f manifests/service.yaml
+          kubectl apply -f manifests/components.yaml
+          kubectl apply -f manifests/hpa.yaml
         working-directory: ${{ github.workspace }}
         
       - name: Get All Info
         run: kubectl get all 
+        #Se verifican los recursos en kubernetes donde 
+        #además se podrá verificar el estado del HPA.
           
       - name: Get Minikube status
         run: minikube status
-
-      - name: Get cluster info
-        run: kubectl cluster-info
 
       - name: Get Test Service URLs
         run: minikube service list
