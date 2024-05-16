@@ -20,7 +20,7 @@ jobs:
           kubectl apply -f manifests/service.yaml
           kubectl apply -f manifests/components.yaml
           kubectl apply -f manifests/hpa.yaml
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ github.workspace }} 
 
       - name: Espera 30 segundos
         run: sleep 30
